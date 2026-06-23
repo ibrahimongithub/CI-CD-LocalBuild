@@ -1,0 +1,24 @@
+name: Continuous Integration Build Engine
+
+on:
+  workflow_dispatch: # Gives you a manual button to test it instantly
+  push:
+    branches:
+      - main       # Fires automatically every time you edit your code
+
+jobs:
+  test-compile:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Download your repo files onto GitHub's cloud computer
+      - name: Fetch Source Code
+        uses: actions/checkout@v4
+
+      # Step 2: Compile the Dockerfile locally to test for errors
+      - name: Compile Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false  # Tells GitHub to skip uploading to Docker Hub!
+          tags: local-test-app:latest
